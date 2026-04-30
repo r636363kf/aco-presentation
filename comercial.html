@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>RKF — Presentación Comercial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --ink: #0A1024;
+    --ink-2: #1A2341;
+    --muted: #6B7388;
+    --line: #E4E7EE;
+    --paper: #FFFFFF;
+    --paper-2: #F4F5F8;
+    --brand: #0B3A8B;
+    --brand-2: #1E5FD9;
+    --brand-soft: #E8EEFB;
+    --accent: #3DD68C;
+  }
+  html, body { margin:0; padding:0; background:#0A1024; color:var(--ink); font-family:'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  deck-stage { background:#0A1024; }
+
+  /* ------- shared slide tokens ------- */
+  .s {
+    box-sizing: border-box;
+    width:100%; height:100%;
+    background:var(--paper);
+    color:var(--ink);
+    padding: 100px 110px 90px;
+    display:flex; flex-direction:column;
+    position:relative;
+  }
+  .s.dark { background:var(--ink); color:#fff; }
+  .s.brand { background:var(--brand); color:#fff; }
+  .s.soft { background:var(--paper-2); }
+
+  /* eyebrow */
+  .eyebrow {
+    font-size: 22px; letter-spacing: .18em; text-transform: uppercase;
+    font-weight:600; color: var(--brand);
+    display:flex; align-items:center; gap:18px;
+  }  .s.dark .eyebrow, .s.brand .eyebrow { color: #9DB6EE; }
+  .eyebrow .bar { width:42px; height:2px; background:currentColor; opacity:.7; }
+
+  h1.title {
+    font-size: 96px; line-height: 1.02; letter-spacing: -0.025em;
+    font-weight: 700; margin: 0; text-wrap: balance;
+  }
+  h2.title {
+    font-size: 72px; line-height: 1.05; letter-spacing: -0.02em;
+    font-weight: 600; margin: 0; text-wrap: balance;
+  }
+  h3.title {
+    font-size: 56px; line-height: 1.08; letter-spacing: -0.015em;
+    font-weight: 600; margin: 0;
+  }
+  .lead {
+    font-size: 34px; line-height: 1.4; color: var(--ink-2);
+    font-weight: 400; max-width: 1500px;
+  }
+  .s.dark .lead, .s.brand .lead { color: rgba(255,255,255,.78); }
+  .small { font-size: 26px; line-height: 1.45; color: var(--muted); }
+
+  /* logo lockup */
+  .logo-lockup {
+    display:inline-flex; align-items:center; gap:18px;
+    font-weight:600; font-size:24px; letter-spacing:-.005em; color:var(--ink);
+  }
+  .logo-mark {
+    width:64px; height:64px; display:flex; align-items:center; justify-content:center;
+  }
+  .logo-mark img { width:100%; height:100%; object-fit:contain; display:block; }
+  .s.dark .logo-lockup, .s.brand .logo-lockup { color:#fff; }
+  .s.dark .logo-mark img, .s.brand .logo-mark img { /* keep original */ }
+
+  /* footer slide chrome */
+  .footer {
+    position:absolute; left:110px; right:110px; bottom:54px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:22px; color:var(--muted); letter-spacing:.04em;
+  }
+  .s.dark .footer, .s.brand .footer { color: rgba(255,255,255,.55); }
+  .footer .dot { width:8px; height:8px; border-radius:50%; background:var(--brand); margin: 0 14px; }
+  .s.dark .footer .dot, .s.brand .footer .dot { background:#fff; }
+  .footer .logo-lockup { font-size:18px; font-weight:500; }
+  .footer .logo-mark { width:32px; height:32px; }
+
+  /* ------- 01 cover ------- */
+  .cover-grid {
+    flex:1; display:grid; grid-template-rows: auto 1fr auto; gap:64px;
+  }
+  .cover-title { display:flex; flex-direction:column; justify-content:center; }
+  .cover-title h1 { font-size: 140px; line-height: .98; font-weight: 700; letter-spacing:-0.035em; margin:0; }
+  .cover-title .accent { color: var(--brand); }
+  .cover-title .sub { margin-top: 36px; font-size: 38px; color: var(--muted); font-weight: 400; max-width: 1300px; line-height: 1.3; }
+  .cover-meta { display:flex; justify-content:space-between; align-items:flex-end; }
+  .cover-meta .col { display:flex; flex-direction:column; gap:8px; }
+  .cover-meta .label { font-size:20px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .cover-meta .value { font-size:26px; color:var(--ink); font-weight:500; }
+
+  /* ------- 02 problem ------- */
+  .two-col {
+    flex:1; display:grid; grid-template-columns: 1.05fr 1fr; gap: 100px; align-items:center;
+  }
+  .stack-list { display:flex; flex-direction:column; gap: 22px; margin-top: 12px; }
+  .stack-list .row {
+    display:grid; grid-template-columns: 80px 1fr; gap: 28px; align-items:baseline;
+    padding: 22px 0; border-top: 1px solid var(--line);
+    font-size: 30px; line-height:1.35;
+  }
+  .stack-list .row:last-child { border-bottom: 1px solid var(--line); }
+  .stack-list .num { font-weight:600; color: var(--brand); font-variant-numeric: tabular-nums; font-size: 26px; letter-spacing:.05em; }
+  .stack-list .text { color: var(--ink-2); }
+
+  /* ------- 03 modules grid ------- */
+  .modules {
+    flex:1; display:grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr);
+    gap: 28px; margin-top: 56px;
+  }
+  .mod {
+    background: var(--paper-2);
+    border-radius: 20px; padding: 44px 40px;
+    display:flex; flex-direction:column; gap: 18px;
+    border: 1px solid transparent;
+  }
+  .mod.feature {
+    background: var(--brand); color:#fff;
+    grid-row: span 2; padding: 56px 48px; gap: 28px;
+  }
+  .mod .num {
+    font-size: 22px; font-weight: 600; letter-spacing:.16em; color: var(--brand);
+  }
+  .mod.feature .num { color: rgba(255,255,255,.75); }
+  .mod h4 {
+    font-size: 40px; font-weight: 600; line-height:1.1; margin:0; letter-spacing:-.01em;
+  }
+  .mod.feature h4 { font-size: 56px; }
+  .mod p {
+    font-size: 24px; line-height:1.45; color: var(--ink-2); margin:0;
+  }
+  .mod.feature p { color: rgba(255,255,255,.85); font-size: 28px; }
+  .mod.feature ul {
+    margin: 8px 0 0; padding: 0; list-style: none; display:flex; flex-direction:column; gap: 14px;
+  }
+  .mod.feature li {
+    font-size: 24px; line-height:1.4; color: rgba(255,255,255,.92);
+    padding-left: 26px; position: relative;
+  }
+  .mod.feature li::before {
+    content: ""; position:absolute; left:0; top: 14px;
+    width: 14px; height: 2px; background: var(--accent);
+  }
+
+  /* ------- 04 module spotlight ------- */
+  .spot {
+    flex:1; display:grid; grid-template-columns: 1.2fr 1fr; gap: 90px; align-items:stretch;
+  }
+  .spot-left { display:flex; flex-direction:column; justify-content:center; gap: 36px; }
+  .spot-features { display:grid; grid-template-columns: 1fr 1fr; gap: 28px 36px; margin-top: 24px; }
+  .feat { display:flex; flex-direction:column; gap: 8px; padding: 22px 0 22px 22px; border-left: 3px solid var(--brand); }
+  .feat .ttl { font-size: 26px; font-weight:600; color: var(--ink); }
+  .feat .desc { font-size: 22px; color: var(--muted); line-height:1.4; }
+
+  .spot-right {
+    background: var(--ink); color:#fff; border-radius: 24px;
+    padding: 48px 44px; display:flex; flex-direction:column; gap: 22px;
+    justify-content: space-between;
+  }
+  .device-tag {
+    font-size: 20px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.55); font-weight:600;
+  }
+  .device-quote {
+    font-size: 36px; line-height:1.25; font-weight: 500; letter-spacing: -.01em;
+    color:#fff;
+  }
+  .device-quote .em { color: var(--accent); font-weight: 600; }
+  .device-stats { display:grid; grid-template-columns: repeat(3,1fr); gap: 18px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.12); }
+  .device-stats .stat .v { font-size: 40px; font-weight: 700; letter-spacing:-.02em; }
+  .device-stats .stat .l { font-size: 18px; color: rgba(255,255,255,.6); margin-top: 4px; line-height:1.3; }
+
+  /* ------- BI ------- */
+  .bi {
+    flex:1; display:grid; grid-template-columns: 1fr 1.35fr; gap: 60px; align-items:stretch; margin-top: 48px;
+  }
+  .bi-left { display:flex; flex-direction:column; justify-content:center; gap: 28px; }
+  .bi-left .lead-bi { font-size: 26px; line-height:1.4; color: var(--ink-2); margin:0; max-width: 720px; }
+  .bi-features { display:grid; grid-template-columns: 1fr; gap: 22px; margin-top: 14px; }
+  .bi-feat {
+    display:flex; gap:18px; align-items:flex-start;
+    padding: 18px 22px; background: var(--paper); border:1px solid var(--line); border-radius:14px;
+  }
+  .bi-feat .ico {
+    flex:0 0 40px; width:40px; height:40px; border-radius:10px;
+    background: var(--brand); color:#fff; display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace; font-weight:700; font-size: 16px;
+  }
+  .bi-feat .ttl { font-size: 22px; font-weight:600; color:var(--ink); margin:0 0 4px; line-height:1.2; }
+  .bi-feat .desc { font-size: 17px; color: var(--muted); line-height:1.4; margin:0; }
+
+  .bi-right {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 18px;
+    padding: 18px; display:flex; flex-direction:column; gap: 14px;
+    box-shadow: 0 30px 60px -30px rgba(10,16,36,.18);
+  }
+  .bi-right .browser-bar {
+    display:flex; align-items:center; gap:10px; padding: 6px 8px;
+  }
+  .bi-right .browser-bar .dot { width:10px; height:10px; border-radius:50%; background:#E4E7EE; }
+  .bi-right .browser-bar .url {
+    flex:1; height: 24px; background: var(--paper-2); border-radius: 6px;
+    display:flex; align-items:center; padding: 0 12px;
+    font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+  }
+  .bi-right img {
+    width: 100%; height: auto; display:block; border-radius: 10px;
+    border: 1px solid var(--line);
+  }
+  .bi-caption {
+    font-size: 15px; color: var(--muted); text-align:center; margin: 4px 0 0;
+    letter-spacing:.04em;
+  }
+
+  /* ------- 02 why ------- */
+  .why-grid {
+    display:grid; grid-template-columns: repeat(5, 1fr); gap: 18px; margin-top: 40px;
+  }
+  .why {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px 22px; display:flex; flex-direction:column; gap: 10px;
+  }
+  .why .hero {
+    font-size: 44px; font-weight: 700; letter-spacing:-.03em; line-height:1; color: var(--brand);
+    font-variant-numeric: tabular-nums;
+  }
+  .why .hero .u { font-size: 22px; color: var(--ink-2); margin-left: 3px; font-weight:600; }
+  .why .hero.text { font-size: 26px; line-height: 1.05; }
+  .why h5 { font-size: 18px; font-weight: 600; margin:0; line-height:1.25; letter-spacing:-.005em; }
+  .why p { font-size: 14px; line-height:1.4; color: var(--muted); margin:0; }
+
+  /* integration diagram */
+  .diagram {
+    margin-top: 36px; flex:1;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 18px;
+    padding: 36px 44px 32px;
+    display:flex; flex-direction:column;
+  }
+  .diagram-title {
+    font-size: 14px; letter-spacing:.18em; text-transform:uppercase; font-weight:600; color: var(--ink-2);
+    margin-bottom: 24px;
+  }
+  .diagram-flow {
+    display:flex; align-items:stretch; gap: 0; flex:1;
+  }
+  .dnode {
+    flex:1; background: #fff; border: 1.5px solid var(--brand);
+    border-radius: 12px; padding: 14px 16px; display:flex; flex-direction:column; gap:4px;
+    min-height: 90px; justify-content:center;
+  }
+  .dnode.hub {
+    background: var(--brand); color:#fff; border-color:var(--brand);
+    flex: 1.3;
+  }
+  .dnode .dlabel { font-size: 11px; letter-spacing:.14em; text-transform:uppercase; font-weight:600; color: var(--brand); opacity:.8; }
+  .dnode.hub .dlabel { color:#fff; opacity:.85; }
+  .dnode .dname { font-size: 17px; font-weight:600; line-height:1.2; letter-spacing:-.005em; color: var(--ink); }
+  .dnode.hub .dname { color:#fff; }
+  .darrow {
+    flex: 0 0 28px; display:flex; align-items:center; justify-content:center; color: var(--brand);
+  }
+  .darrow svg { width: 28px; height: 14px; }
+  .diagram-caption {
+    margin-top: 18px; font-size: 13px; color: var(--ink-2); text-align:center;
+  }
+
+  /* ------- 06 close ------- */
+  .close {
+    flex:1; display:grid; grid-template-rows: 1fr auto; gap: 60px;
+  }
+  .close-block { display:flex; flex-direction:column; justify-content:center; gap: 36px; }
+  .close-block h2 { font-size: 110px; line-height:1; font-weight:700; letter-spacing:-.03em; margin:0; }
+  .close-block .accent-line { width: 120px; height: 6px; background: var(--accent); }
+  .close-block .sub { font-size: 36px; color: rgba(255,255,255,.78); max-width: 1400px; line-height:1.35; }
+
+  .contact {
+    display:grid; grid-template-columns: repeat(3,1fr); gap: 40px;
+    padding-top: 40px; border-top: 1px solid rgba(255,255,255,.15);
+  }
+  .contact .label { font-size: 18px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.5); font-weight:600; }
+  .contact .val { font-size: 28px; color:#fff; margin-top: 8px; font-weight:500; }
+
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- 01 COVER -->
+  <section data-label="01 Portada">
+    <div class="s">
+      <div class="logo-lockup">
+        <div class="logo-mark"><img src="assets/aco-logo.png" alt="Aconcagua"/></div>
+        <span>Aconcagua</span>
+      </div>
+      <div class="cover-grid" style="margin-top:80px;">
+        <div></div>
+        <div class="cover-title">
+          <h1>Sistema de gestión<br/><span class="accent">empresarial.</span></h1>
+          <p class="sub">Una sola plataforma para vender, almacenar, repartir, cobrar e importar — diseñada para distribuidores mayoristas que operan en la calle.</p>
+        </div>
+        <div class="cover-meta">
+          <div class="col">
+            <div class="label">Presentación</div>
+            <div class="value">Visión comercial del sistema</div>
+          </div>
+          <div class="col" style="text-align:right;">
+            <div class="label">2026</div>
+            <div class="value">v. 1.0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 POR QUÉ CONFIAR -->
+  <section data-label="02 Por que confiar">
+    <div class="s">
+      <div class="eyebrow"><span class="bar"></span>Por qué confiar</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">Un sistema en producción que ya opera un grupo empresarial completo.</h2>
+      <div class="why-grid">
+        <div class="why">
+          <div class="hero">10<span class="u">+</span></div>
+          <div>
+            <h5>Años en producción</h5>
+            <p>Una década de iteración continua sobre operaciones reales.</p>
+          </div>
+        </div>
+        <div class="why">
+          <div class="hero">5</div>
+          <div>
+            <h5>Empresas en una sola plataforma</h5>
+            <p>Aconcagua, DyT, MyS, IBO y CIES bajo el mismo sistema.</p>
+          </div>
+        </div>
+        <div class="why">
+          <div class="hero text">SIFEN<br/>nativo</div>
+          <div>
+            <h5>Cumplimiento tributario</h5>
+            <p>Firma digital, CDC y KUDE — no es un agregado.</p>
+          </div>
+        </div>
+        <div class="why">
+          <div class="hero text">Tiempo<br/>real</div>
+          <div>
+            <h5>Tracking GPS</h5>
+            <p>Visibilidad de los repartos minuto a minuto.</p>
+          </div>
+        </div>
+        <div class="why">
+          <div class="hero text">Auditoría<br/>completa</div>
+          <div>
+            <h5>Quién y cuándo en cada estado</h5>
+            <p>Cargado, verificado, aprobado, procesado, anulado.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="diagram">
+        <div class="diagram-title">Cómo se integran los módulos</div>
+        <div class="diagram-flow">
+          <div class="dnode">
+            <div class="dlabel">Inicio</div>
+            <div class="dname">Comercial<br/>Pedido en PDV</div>
+          </div>
+          <div class="darrow"><svg viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7 H22 M18 3 L22 7 L18 11"/></svg></div>
+          <div class="dnode">
+            <div class="dlabel">Stock</div>
+            <div class="dname">Almacenamiento<br/>Reserva y picking</div>
+          </div>
+          <div class="darrow"><svg viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7 H22 M18 3 L22 7 L18 11"/></svg></div>
+          <div class="dnode">
+            <div class="dlabel">Reparto</div>
+            <div class="dname">Distribución<br/>Hoja de ruta y entrega</div>
+          </div>
+          <div class="darrow"><svg viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7 H22 M18 3 L22 7 L18 11"/></svg></div>
+          <div class="dnode">
+            <div class="dlabel">Cobro</div>
+            <div class="dname">Finanzas<br/>Rendición y cobranza</div>
+          </div>
+          <div class="darrow"><svg viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7 H22 M18 3 L22 7 L18 11"/></svg></div>
+          <div class="dnode hub">
+            <div class="dlabel">Reposición</div>
+            <div class="dname">Importaciones<br/>Despacho y costeo</div>
+          </div>
+        </div>
+        <div class="diagram-caption">Cada módulo entrega información al siguiente sin reingreso manual. Toda la operación queda trazada en un único sistema.</div>
+      </div>
+
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>02 / 07</div></div>
+    </div>
+  </section>
+
+  <!-- 03 EL RETO -->
+  <section data-label="03 El reto">
+    <div class="s">
+      <div class="two-col" style="margin-top:48px;">
+        <div>
+          <h2 class="title">Coordinación operacional.</h2>
+          <p class="lead" style="margin-top:36px;">Vendedores en ruta, inventario distribuido en bodega, flota de reparto, facturación electrónica obligatoria, gestión de cobranzas y compras al exterior. Habitualmente cada área opera en un sistema independiente o, en su defecto, en planillas.</p>
+        </div>
+        <div class="stack-list">
+          <div class="row"><div class="num">01</div><div class="text">Pedidos levantados desde el celular del vendedor.</div></div>
+          <div class="row"><div class="num">02</div><div class="text">Stock distribuido en pallets cerrados y unidades sueltas.</div></div>
+          <div class="row"><div class="num">03</div><div class="text">Repartos programados y optimización de ruta.</div></div>
+          <div class="row"><div class="num">04</div><div class="text">Facturación electrónica con firma digital y CDC por cada documento.</div></div>
+          <div class="row"><div class="num">05</div><div class="text">Cuentas por cobrar, compras y despachos de aduana en paralelo.</div></div>
+        </div>
+      </div>
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>03 / 07</div></div>
+    </div>
+  </section>
+
+  <!-- 04 MÓDULOS -->
+  <section data-label="04 Modulos">
+    <div class="s">
+      <div class="eyebrow"><span class="bar"></span>Una plataforma, cinco módulos</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">Toda la cadena operativa, integrada en una sola plataforma.</h2>
+      <div class="modules">
+        <div class="mod feature">
+          <div class="num">01 · SALES TIME</div>
+          <h4>Comercial<br/>(Ventas)</h4>
+          <p>El corazón del sistema: del catálogo al pedido en el punto de venta.</p>
+          <ul>
+            <li>App móvil en línea</li>
+            <li>Circuitos y rutas planificados</li>
+            <li>Tareas en PDV: marcación, vencimientos, fotos</li>
+            <li>Análisis por zona, vendedor y canal</li>
+          </ul>
+        </div>
+        <div class="mod">
+          <div class="num">02 · WAREHOUSE</div>
+          <h4>Almacenamiento</h4>
+          <p>Múltiples bodegas, stock dual, trazabilidad por lote y vencimiento.</p>
+        </div>
+        <div class="mod">
+          <div class="num">03 · LOGÍSTICA</div>
+          <h4>Distribución</h4>
+          <p>Hojas de reparto, asignación a camiones y tracking GPS en tiempo real.</p>
+        </div>
+        <div class="mod">
+          <div class="num">04 · FINANZAS</div>
+          <h4>Rendiciones &amp; Cobranzas</h4>
+          <p>Cuentas corrientes, recibos, conciliación bancaria y bloqueos por mora.</p>
+        </div>
+        <div class="mod">
+          <div class="num">05 · IMPORTACIONES</div>
+          <h4>Despachos</h4>
+          <p>Aduana, aranceles, IVA renta, tasas de cambio y costeo por importación.</p>
+        </div>
+      </div>
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>04 / 07</div></div>
+    </div>
+  </section>
+
+  <!-- 05 SPOTLIGHT COMERCIAL -->
+  <section data-label="05 Comercial">
+    <div class="s soft">
+      <div class="eyebrow"><span class="bar"></span>Foco — Comercial / Ventas</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">El equipo de ventas en ruta, conectado con el backoffice en tiempo real.</h2>
+
+      <div class="spot" style="margin-top:60px;">
+        <div class="spot-left">
+          <p class="lead">Una aplicación diseñada para registrar pedidos, ejecutar tareas en punto de venta y mantener al equipo comercial conectado con el backoffice.</p>
+          <div class="spot-features">
+            <div class="feat">
+              <div class="ttl">Catálogo y precios</div>
+              <div class="desc">Por canal, por cliente, con acuerdos negociados.</div>
+            </div>
+            <div class="feat">
+              <div class="ttl">Circuitos planificados</div>
+              <div class="desc">Diario, semanal, quincenal, mensual e intercalado.</div>
+            </div>
+            <div class="feat">
+              <div class="ttl">Marcación y control de vencimientos</div>
+              <div class="desc">Registro en punto de venta con foto georreferenciada.</div>
+            </div>
+            <div class="feat">
+              <div class="ttl">Promociones</div>
+              <div class="desc">Promociones vigentes por canal, cliente y producto.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="spot-right">
+          <div class="device-tag">App de ventas · iOS / Android</div>
+          <div class="device-quote">
+            Una herramienta diseñada para el día a día del equipo comercial: <span class="em">rápida, clara y enfocada</span> en cerrar el pedido en el punto de venta.
+          </div>
+          <div class="device-stats">
+            <div class="stat"><div class="v">5</div><div class="l">Tipos de circuito</div></div>
+            <div class="stat"><div class="v">PDV</div><div class="l">Tareas en punto de venta</div></div>
+            <div class="stat"><div class="v">GPS</div><div class="l">Visitas georreferenciadas</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>05 / 07</div></div>
+    </div>
+  </section>
+
+  <!-- 06 BI -->
+  <section data-label="06 Business Intelligence">
+    <div class="s soft">
+      <div class="eyebrow"><span class="bar"></span>Business Intelligence integrado</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">Los datos del negocio, en vivo y al alcance de cada decisión.</h2>
+
+      <div class="bi">
+        <div class="bi-left">
+          <p class="lead-bi">Módulo de BI nativo conectado a la operación: lo que pasa en pedidos, facturación y reparto se ve en tableros sin esperar reportes ni exportar a Excel.</p>
+
+          <div class="bi-features">
+            <div class="bi-feat">
+              <div class="ico">01</div>
+              <div>
+                <div class="ttl">Indicadores en vivo</div>
+                <p class="desc">Ventas, facturas, clientes, rechazos, efectividad y margen en una sola vista.</p>
+              </div>
+            </div>
+            <div class="bi-feat">
+              <div class="ico">02</div>
+              <div>
+                <div class="ttl">Rankings de productos y clientes</div>
+                <p class="desc">Top performers actualizados desde la misma base operacional.</p>
+              </div>
+            </div>
+            <div class="bi-feat">
+              <div class="ico">03</div>
+              <div>
+                <div class="ttl">Filtros y mapa de ventas</div>
+                <p class="desc">Cortes por período, sucursal, vendedor y geografía sin desarrollos a medida.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bi-right">
+          <div class="browser-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="url">aconcagua · sales overview</div>
+          </div>
+          <img src="assets/sales-bi.png" alt="Dashboard de ventas Aconcagua"/>
+          <p class="bi-caption">Tablero Sales Overview — datos reales de operación.</p>
+        </div>
+      </div>
+
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>06 / 07</div></div>
+    </div>
+  </section>
+
+  <!-- 07 CIERRE -->
+  <section data-label="07 Cierre">
+    <div class="s dark">
+      <div class="logo-lockup">
+        <div class="logo-mark"><img src="assets/aco-logo.png" alt="Aconcagua"/></div>
+        <span>Aconcagua</span>
+      </div>
+      <div class="close" style="margin-top:60px;">
+        <div class="close-block">
+          <div class="accent-line"></div>
+          <h2>Conversemos sobre<br/>su implementación<br/>en su organización.</h2>
+          <p class="sub">El sistema está disponible para acompañar a distribuidores que requieren una plataforma probada en operación real.</p>
+        </div>
+        <div class="contact">
+          <div>
+            <div class="label">Sitio</div>
+            <div class="val">aconcagua.com.py</div>
+          </div>
+          <div>
+            <div class="label">Contacto comercial</div>
+            <div class="val">comercial@aconcagua.com.py</div>
+          </div>
+          <div>
+            <div class="label">Ubicación</div>
+            <div class="val">Asunción · Paraguay</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>

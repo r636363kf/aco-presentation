@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>RKF — Presentación Técnica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --ink: #0A1024;
+    --ink-2: #1A2341;
+    --muted: #6B7388;
+    --line: #E4E7EE;
+    --paper: #FFFFFF;
+    --paper-2: #F4F5F8;
+    --brand: #0B3A8B;
+    --brand-2: #1E5FD9;
+    --brand-soft: #E8EEFB;
+    --accent: #3DD68C;
+    --code: #FF9E6D;
+  }
+  html, body { margin:0; padding:0; background:#0A1024; color:var(--ink); font-family:'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  deck-stage { background:#0A1024; }
+  .mono { font-family:'JetBrains Mono', monospace; }
+
+  .s { box-sizing: border-box; width:100%; height:100%;
+       background:var(--paper); color:var(--ink);
+       padding: 90px 110px 80px;
+       display:flex; flex-direction:column; position:relative; }
+  .s.dark { background:var(--ink); color:#fff; }
+  .s.brand { background:var(--brand); color:#fff; }
+  .s.soft { background:var(--paper-2); }
+
+  .eyebrow { font-size: 22px; letter-spacing: .18em; text-transform: uppercase;
+             font-weight:600; color: var(--brand);
+             display:flex; align-items:center; gap:18px; }
+  .s.dark .eyebrow, .s.brand .eyebrow { color: #9DB6EE; }
+  .eyebrow .bar { width:42px; height:2px; background:currentColor; opacity:.7; }
+
+  h1.title { font-size: 96px; line-height:1.02; letter-spacing:-0.025em; font-weight:700; margin:0; text-wrap: balance; }
+  h2.title { font-size: 68px; line-height:1.05; letter-spacing:-0.02em; font-weight:600; margin:0; text-wrap: balance; }
+  .lead { font-size: 32px; line-height:1.4; color:var(--ink-2); font-weight:400; max-width:1500px; }
+  .s.dark .lead, .s.brand .lead { color: rgba(255,255,255,.78); }
+
+  .logo-lockup { display:inline-flex; align-items:center; gap:18px; font-weight:600; font-size:24px; color:var(--ink); }
+  .logo-mark { width:64px; height:64px; display:flex; align-items:center; justify-content:center; }
+  .logo-mark img { width:100%; height:100%; object-fit:contain; display:block; }
+  .s.dark .logo-lockup, .s.brand .logo-lockup { color:#fff; }
+  .s.dark .logo-mark img, .s.brand .logo-mark img { /* keep original */ }
+
+  .footer { position:absolute; left:110px; right:110px; bottom:48px;
+            display:flex; justify-content:space-between; align-items:center;
+            font-size:22px; color:var(--muted); letter-spacing:.04em; }
+  .s.dark .footer, .s.brand .footer { color: rgba(255,255,255,.55); }
+  .footer .logo-lockup { font-size:18px; font-weight:500; }
+  .footer .logo-mark { width:32px; height:32px; }
+
+  /* 01 cover */
+  .cover-grid { flex:1; display:grid; grid-template-rows: auto 1fr auto; gap:60px; }
+  .cover-title h1 { font-size: 130px; line-height:.98; font-weight:700; letter-spacing:-0.035em; margin:0; }
+  .cover-title h1 .accent { color: var(--brand); }
+  .cover-title .sub { margin-top: 36px; font-size: 36px; color: var(--muted); font-weight:400; max-width:1300px; line-height:1.3; }
+  .cover-meta { display:flex; justify-content:space-between; align-items:flex-end; }
+  .cover-meta .label { font-size:20px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .cover-meta .value { font-size:26px; font-weight:500; margin-top:6px; }
+  .cover-spec { display:grid; grid-template-columns: repeat(4,1fr); gap:36px; padding-top:36px; border-top:1px solid var(--line); }
+  .cover-spec .l { font-size:18px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .cover-spec .v { font-size:24px; margin-top:8px; font-weight:500; }
+  .cover-spec .v .mono { font-size:22px; color:var(--brand); }
+
+  /* 02 stack */
+  .stack-grid { flex:1; display:grid; grid-template-columns: repeat(4,1fr); grid-auto-rows: 1fr; gap:24px; margin-top:50px; }
+  .stack-card { background:var(--paper-2); border-radius:18px; padding:32px 30px; display:flex; flex-direction:column; gap:14px; }
+  .stack-card.tall { grid-row: span 2; }
+  .stack-card .ttl { font-size:18px; letter-spacing:.18em; text-transform:uppercase; color:var(--brand); font-weight:700; }
+  .stack-card h4 { font-size:30px; font-weight:600; margin:0; line-height:1.15; letter-spacing:-.005em; }
+  .stack-card .items { display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+  .stack-card .item { font-size:21px; line-height:1.35; color:var(--ink-2); display:flex; gap:12px; align-items:baseline; }
+  .stack-card .item .k { font-family:'JetBrains Mono', monospace; color:var(--brand); font-weight:600; font-size:19px; }
+  .stack-card .item .v { color:var(--muted); }
+
+  /* 03 architecture diagram */
+  .arch { flex:1; margin-top:46px; display:flex; flex-direction:column; gap:22px; }
+  .arch-row { display:grid; gap:22px; }
+  .arch-row.r1 { grid-template-columns: 1fr 1fr 1fr; }
+  .arch-row.r2 { grid-template-columns: 1fr 1fr; }
+  .arch-row.r3 { grid-template-columns: 1.1fr 1.1fr 1fr; }
+  .node {
+    background: var(--paper); border:1.5px solid var(--line); border-radius:14px;
+    padding: 22px 26px; display:flex; flex-direction:column; gap:8px; min-height:120px; justify-content:center;
+  }
+  .node .tag { font-size:16px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+  .node .ttl { font-size:26px; font-weight:600; line-height:1.2; }
+  .node .sub { font-size:18px; color:var(--muted); line-height:1.35; }
+  .node.brand { background:var(--brand); border-color:var(--brand); color:#fff; }
+  .node.brand .tag { color: rgba(255,255,255,.7); }
+  .node.brand .sub { color: rgba(255,255,255,.8); }
+  .node.dark { background:var(--ink); border-color:var(--ink); color:#fff; }
+  .node.dark .tag { color: rgba(255,255,255,.6); }
+  .node.dark .sub { color: rgba(255,255,255,.75); }
+  .arch-conn { display:flex; justify-content:center; height:24px; align-items:center; gap:10px; }
+  .arch-conn .line { width:2px; height:24px; background: var(--line); }
+
+  /* 04 patterns */
+  .pat-grid { flex:1; display:grid; grid-template-columns: 1fr 1fr; gap:34px; margin-top:46px; align-content:start; }
+  .pat { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:34px 36px; display:flex; flex-direction:column; gap:16px; }
+  .pat .ttl { display:flex; align-items:center; gap:14px; }
+  .pat .ttl .num { font-family:'JetBrains Mono', monospace; font-size:18px; color:var(--brand); font-weight:600; letter-spacing:.05em; }
+  .pat .ttl h4 { font-size:30px; font-weight:600; margin:0; letter-spacing:-.005em; }
+  .pat p { margin:0; font-size:21px; color:var(--ink-2); line-height:1.4; }
+  .pat .code {
+    background:var(--ink); color:#E8EEFB; border-radius:10px; padding:18px 22px;
+    font-family:'JetBrains Mono', monospace; font-size:18px; line-height:1.5;
+    overflow:hidden;
+  }
+  .pat .code .c { color: #6E7AA0; }
+  .pat .code .k { color: var(--code); }
+  .pat .code .s { color: var(--accent); }
+
+  /* 05 capabilities */
+  .cap-grid { flex:1; display:grid; grid-template-columns: repeat(3,1fr); gap:26px; margin-top:48px; }
+  .cap { background:var(--paper-2); border-radius:20px; padding:36px 34px; display:flex; flex-direction:column; gap:18px; }
+  .cap .num { font-family:'JetBrains Mono', monospace; font-size:18px; letter-spacing:.16em; color:var(--brand); font-weight:600; }
+  .cap h4 { font-size: 32px; font-weight:600; margin:0; line-height:1.1; }
+  .cap p { font-size: 21px; color:var(--ink-2); margin:0; line-height:1.4; }
+  .cap .stack { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .cap .chip { font-family:'JetBrains Mono', monospace; font-size:16px; padding:6px 12px; border-radius:999px; background:#fff; border:1px solid var(--line); color:var(--brand); font-weight:600; }
+
+  /* 06 mdm */
+  .mdm-wrap { flex:1; display:grid; grid-template-columns: 1.05fr 1fr; gap:48px; margin-top:48px; align-items:stretch; }
+  .mdm-diagram { background: var(--paper-2); border-radius: 22px; padding: 44px 40px 36px; display:flex; flex-direction:column; gap:28px; }
+  .mdm-diagram .dttl { font-size:16px; letter-spacing:.18em; text-transform:uppercase; color:var(--brand); font-weight:700; }
+  .mdm-server {
+    align-self:center; min-width: 320px;
+    background: var(--brand); color:#fff; border-radius: 14px;
+    padding: 22px 30px; display:flex; align-items:center; gap:18px;
+  }
+  .mdm-server .ic { width:46px; height:46px; border-radius:8px; background: rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono', monospace; font-weight:700; font-size:18px; }
+  .mdm-server .lab { font-size:13px; letter-spacing:.18em; text-transform:uppercase; opacity:.78; font-weight:600; }
+  .mdm-server .nm { font-size:22px; font-weight:600; line-height:1.1; margin-top:2px; }
+  .mdm-fanout { position:relative; display:grid; grid-template-columns: repeat(3,1fr); gap:24px; padding-top:42px; }
+  .mdm-fanout::before { content:''; position:absolute; left:16.66%; right:16.66%; top:0; height:22px; border-left:2px solid var(--line); border-right:2px solid var(--line); border-top:2px solid var(--line); border-radius: 4px 4px 0 0; }
+  .mdm-fanout::after { content:''; position:absolute; left:50%; top:-22px; width:2px; height:22px; background:var(--line); }
+  .mdm-device { background:#fff; border:1.5px solid var(--brand-2); border-radius: 14px; padding: 22px 16px 18px; display:flex; flex-direction:column; align-items:center; gap:10px; position:relative; }
+  .mdm-device::before { content:''; position:absolute; top:-22px; left:50%; transform:translateX(-50%); width:2px; height:22px; background:var(--line); }
+  .mdm-device .glyph { width: 38px; height: 60px; border-radius:6px; background: var(--brand-2); display:flex; align-items:flex-end; justify-content:center; padding-bottom:5px; }
+  .mdm-device .glyph::after { content:''; width:7px; height:7px; border-radius:50%; background: rgba(255,255,255,.6); }
+  .mdm-device.tablet .glyph { width: 56px; height: 42px; }
+  .mdm-device .lab { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-top:2px; }
+  .mdm-device .nm { font-size:17px; font-weight:600; color:var(--ink); }
+  .mdm-features { background: var(--paper); border:1px solid var(--line); border-radius: 22px; padding: 44px 40px; display:flex; flex-direction:column; gap:20px; }
+  .mdm-features .fttl { font-size:16px; letter-spacing:.18em; text-transform:uppercase; color:var(--brand); font-weight:700; }
+  .mdm-features h3 { font-size:32px; font-weight:600; margin:0; line-height:1.15; letter-spacing:-.005em; }
+  .mdm-features p.lead-sm { font-size:19px; line-height:1.4; color: var(--ink-2); margin:0; }
+  .mdm-feat-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; margin-top: 4px; }
+  .mdm-feat { display:flex; align-items:flex-start; gap:10px; font-size:17px; line-height:1.3; color: var(--ink-2); }
+  .mdm-feat .check { flex:0 0 18px; width:18px; height:18px; border-radius:50%; background: var(--brand-soft); display:flex; align-items:center; justify-content:center; margin-top:2px; }
+  .mdm-feat .check svg { width:10px; height:10px; stroke: var(--brand); fill:none; stroke-width:2.4; }
+
+  /* 07 ci/cd */
+  .ci-wrap { flex:1; margin-top:48px; display:flex; flex-direction:column; gap: 30px; }
+  .ci-pipeline {
+    background: var(--paper-2); border-radius: 22px; padding: 44px 40px;
+    display:flex; align-items:stretch; gap: 0;
+  }
+  .ci-step { flex:1; display:flex; flex-direction:column; gap:10px; padding: 4px 8px; min-height: 150px; justify-content:center; }
+  .ci-step .num { font-family:'JetBrains Mono', monospace; font-size:14px; letter-spacing:.18em; color: var(--brand); font-weight:700; }
+  .ci-step .nm { font-size: 24px; font-weight:600; line-height:1.15; letter-spacing:-.005em; color: var(--ink); }
+  .ci-step .meta { font-size: 15px; color: var(--muted); line-height:1.35; }
+  .ci-step .chip {
+    align-self:flex-start; font-family:'JetBrains Mono', monospace; font-size:13px;
+    padding: 4px 10px; border-radius: 6px; background:#fff; border:1px solid var(--line); color: var(--brand); font-weight:600;
+    margin-top: 4px;
+  }
+  .ci-step.last .nm { color: var(--brand); }
+  .ci-arrow {
+    flex:0 0 36px; display:flex; align-items:center; justify-content:center; color: var(--brand); opacity:.85;
+  }
+  .ci-arrow svg { width: 36px; height: 16px; }
+
+  .ci-bottom { display:grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .ci-tile { background: var(--paper); border:1px solid var(--line); border-radius: 14px; padding: 22px 24px; display:flex; flex-direction:column; gap: 8px; }
+  .ci-tile .lab { font-size: 13px; letter-spacing:.18em; text-transform:uppercase; color: var(--brand); font-weight:700; }
+  .ci-tile .ttl { font-size: 19px; font-weight:600; color: var(--ink); line-height:1.2; }
+  .ci-tile .desc { font-size: 15px; color: var(--muted); line-height:1.4; margin:0; }
+
+  /* 07 numbers */
+  .nums { flex:1; display:grid; grid-template-columns: repeat(3,1fr) 1.2fr; grid-template-rows: 1fr 1fr; gap:22px; margin-top:46px; }
+  .num-card { background:var(--ink); color:#fff; border-radius:20px; padding:36px 34px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; }
+  .num-card.alt { background:var(--paper-2); color:var(--ink); }
+  .num-card.brand { background:var(--brand); color:#fff; }
+  .num-card.large { grid-row: span 2; padding:48px 44px; }
+  .num-card .v { font-size: 92px; font-weight:700; letter-spacing:-.035em; line-height:1; font-variant-numeric: tabular-nums; }
+  .num-card.large .v { font-size: 136px; }
+  .num-card .v .u { font-size: 38px; font-weight:600; margin-left:4px; }
+  .num-card.large .v .u { font-size: 56px; }
+  .num-card h5 { font-size:24px; font-weight:600; margin:0; line-height:1.2; }
+  .num-card.large h5 { font-size:32px; }
+  .num-card p { font-size:18px; color: rgba(255,255,255,.65); margin:0; line-height:1.4; }
+  .num-card.alt p { color: var(--muted); }
+  .num-card.large p { font-size:22px; }
+
+  /* 07 close */
+  .close { flex:1; display:grid; grid-template-rows: 1fr auto; gap:60px; }
+  .close-block { display:flex; flex-direction:column; justify-content:center; gap:36px; }
+  .close-block h2 { font-size:108px; line-height:1; font-weight:700; letter-spacing:-.03em; margin:0; }
+  .close-block .accent-line { width:120px; height:6px; background: var(--accent); }
+  .close-block .sub { font-size:34px; color: rgba(255,255,255,.78); max-width:1500px; line-height:1.35; }
+  .contact { display:grid; grid-template-columns: repeat(3,1fr); gap:40px; padding-top:40px; border-top:1px solid rgba(255,255,255,.15); }
+  .contact .label { font-size:18px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.5); font-weight:600; }
+  .contact .val { font-size:26px; color:#fff; margin-top:8px; font-weight:500; }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- 01 COVER -->
+  <section data-label="01 Portada">
+    <div class="s">
+      <div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt="Aconcagua"/></div><span>Aconcagua · Arquitectura del sistema</span></div>
+      <div class="cover-grid" style="margin-top:60px;">
+        <div></div>
+        <div class="cover-title">
+          <h1>Hecho para <span class="accent">producción</span><br/>desde el primer día.</h1>
+          <p class="sub">Stack moderno, monolito modular y patrones probados en una década de operación real. Diseñado para evolucionar sin reescribirse.</p>
+        </div>
+        <div class="cover-spec">
+          <div><div class="l">Lenguaje</div><div class="v"><span class="mono">Python 3.13</span></div></div>
+          <div><div class="l">Framework</div><div class="v"><span class="mono">Django 5.2</span></div></div>
+          <div><div class="l">Base de datos</div><div class="v"><span class="mono">PostgreSQL</span></div></div>
+          <div><div class="l">Real-time</div><div class="v"><span class="mono">Channels + Celery</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 STACK -->
+  <section data-label="02 Stack">
+    <div class="s">
+      <div class="eyebrow"><span class="bar"></span>Stack en una mirada</div>
+      <h2 class="title" style="margin-top:24px; max-width:1400px;">Tecnología corriente, elegida para durar.</h2>
+      <div class="stack-grid">
+        <div class="stack-card tall">
+          <div class="ttl">Backend</div>
+          <h4>Python 3.13 · Django 5.2</h4>
+          <div class="items">
+            <div class="item"><span class="k">ORM</span><span class="v">Django ORM, multi-DB router</span></div>
+            <div class="item"><span class="k">ASGI</span><span class="v">Daphne + Channels 4</span></div>
+            <div class="item"><span class="k">WSGI</span><span class="v">uWSGI</span></div>
+            <div class="item"><span class="k">Async</span><span class="v">Celery 5.5 + RabbitMQ</span></div>
+            <div class="item"><span class="k">Cache</span><span class="v">Redis (3 DBs lógicas)</span></div>
+            <div class="item"><span class="k">Auth</span><span class="v">django-auth + simple-history</span></div>
+          </div>
+        </div>
+        <div class="stack-card tall">
+          <div class="ttl">Datos</div>
+          <h4>PostgreSQL · 9 DBs</h4>
+          <div class="items">
+            <div class="item"><span class="k">main</span><span class="v">rkfbits — operacional</span></div>
+            <div class="item"><span class="k">bi</span><span class="v">acosales, manag_cubes</span></div>
+            <div class="item"><span class="k">multi</span><span class="v">mysbits, ibopebits, ciesbits, wardbits</span></div>
+            <div class="item"><span class="k">gps</span><span class="v">tracking_gps</span></div>
+            <div class="item"><span class="k">legacy</span><span class="v">HyperFileSQL (WinDev / Clarion)</span></div>
+            <div class="item"><span class="k">ext</span><span class="v">rtdcbits</span></div>
+          </div>
+        </div>
+        <div class="stack-card">
+          <div class="ttl">Frontend</div>
+          <h4>Server-rendered + jQuery</h4>
+          <div class="items">
+            <div class="item"><span class="v">Bootstrap 5 · crispy-forms</span></div>
+            <div class="item"><span class="v">paramquery (pqGrid) — patrón semodel</span></div>
+            <div class="item"><span class="v">Select2 · axios · WebSockets</span></div>
+          </div>
+        </div>
+        <div class="stack-card">
+          <div class="ttl">Mobile</div>
+          <h4>Apps nativas</h4>
+          <div class="items">
+            <div class="item"><span class="v">API HTTP propia (api_user)</span></div>
+            <div class="item"><span class="v">Sync offline → online</span></div>
+            <div class="item"><span class="v">Push: Firebase Cloud Messaging</span></div>
+          </div>
+        </div>
+        <div class="stack-card">
+          <div class="ttl">Integraciones</div>
+          <h4>SIFEN · Bancos · BI</h4>
+          <div class="items">
+            <div class="item"><span class="v">Facturación electrónica SIFEN (SOAP)</span></div>
+            <div class="item"><span class="v">Apache Superset / cubos BI</span></div>
+            <div class="item"><span class="v">SFTP (paramiko, pysftp)</span></div>
+          </div>
+        </div>
+        <div class="stack-card">
+          <div class="ttl">Salidas</div>
+          <h4>Documentos &amp; reportes</h4>
+          <div class="items">
+            <div class="item"><span class="v">openpyxl · pandas · numpy</span></div>
+            <div class="item"><span class="v">reportlab — PDFs y KUDE</span></div>
+            <div class="item"><span class="v">arrow · Decimal explícito</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>02 / 09</div></div>
+    </div>
+  </section>
+
+  <!-- 03 ARQUITECTURA -->
+  <section data-label="03 Arquitectura">
+    <div class="s soft">
+      <div class="eyebrow"><span class="bar"></span>Arquitectura simplificada</div>
+      <h2 class="title" style="margin-top:24px; max-width:1400px;">Un monolito modular, dos caminos: HTTP síncrono y WebSocket en paralelo.</h2>
+
+      <div class="arch">
+        <div class="arch-row r1">
+          <div class="node"><div class="tag">Clientes</div><div class="ttl">Apps móviles</div><div class="sub">Vendedores, choferes, repositoras · sync offline · FCM push</div></div>
+          <div class="node"><div class="tag">Clientes</div><div class="ttl">Backoffice web</div><div class="sub">Bootstrap 5 + jQuery · pqGrid · WebSockets</div></div>
+          <div class="node"><div class="tag">Externos</div><div class="ttl">SIFEN · WhatsApp · Bancos</div><div class="sub">SOAP · webhooks · SFTP</div></div>
+        </div>
+
+        <div class="arch-conn"><div class="line"></div></div>
+
+        <div class="arch-row" style="grid-template-columns: 1fr;">
+          <div class="node dark"><div class="tag">Edge</div><div class="ttl">Nginx + TLS</div><div class="sub">HTTPS · WebSocket upgrade · multiplexing a uWSGI / Daphne</div></div>
+        </div>
+
+        <div class="arch-conn"><div class="line"></div></div>
+
+        <div class="arch-row r2">
+          <div class="node brand"><div class="tag">WSGI</div><div class="ttl">uWSGI · Django</div><div class="sub">Endpoints dinámicos em / execute_module / operation_record</div></div>
+          <div class="node brand"><div class="tag">ASGI</div><div class="ttl">Daphne · Channels</div><div class="sub">WebSocket consumers · channels_redis layer</div></div>
+        </div>
+
+        <div class="arch-conn"><div class="line"></div></div>
+
+        <div class="arch-row r3">
+          <div class="node"><div class="tag">Storage</div><div class="ttl">PostgreSQL</div><div class="sub">9 bases — operacional, BI, multi-empresa, GPS, legacy</div></div>
+          <div class="node"><div class="tag">Cache / Bus</div><div class="ttl">Redis · RabbitMQ</div><div class="sub">cache · channels · broker · result backend</div></div>
+          <div class="node"><div class="tag">Workers</div><div class="ttl">Celery + beat</div><div class="sub">Cubos, fillrate, SIFEN async, push, batch nocturno</div></div>
+        </div>
+      </div>
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>03 / 09</div></div>
+    </div>
+  </section>
+
+  <!-- 04 PATRONES -->
+  <section data-label="04 Patrones">
+    <div class="s">
+      <div class="eyebrow"><span class="bar"></span>Patrones de ingeniería</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">Decisiones de diseño que mantienen el código predecible a escala.</h2>
+
+      <div class="pat-grid">
+        <div class="pat">
+          <div class="ttl"><span class="num">/01</span><h4>Endpoints dinámicos</h4></div>
+          <p>El frontend no llama URLs específicas. Despacha a un dispatcher universal que importa el módulo, instancia la clase y ejecuta el método indicado.</p>
+          <div class="code">
+<span class="c"># POST /em/</span><br/>
+<span class="k">module</span>=sales_man<br/>
+<span class="k">package</span>=sales_control<br/>
+<span class="k">attr</span>=SalesControl<br/>
+<span class="k">mname</span>=export_rutero_input<br/>
+<span class="c"># → DExecution.execute_module(...)</span>
+          </div>
+        </div>
+
+        <div class="pat">
+          <div class="ttl"><span class="num">/02</span><h4>Auditoría in-row estandarizada</h4></div>
+          <p>Cada modelo transaccional lleva los mismos campos de estado: quién lo cargó, verificó, aprobó, procesó o anuló — y cuándo. Reemplaza el soft-delete formal y deja trazabilidad completa.</p>
+          <div class="code">
+<span class="k">cargado_010</span> · <span class="k">verificado_045</span><br/>
+<span class="k">aprobado_050</span> · <span class="k">procesado_060</span><br/>
+<span class="k">anulado_040</span><br/>
+<span class="c"># + *_por_gecos / _fecha / _hora</span>
+          </div>
+        </div>
+
+        <div class="pat">
+          <div class="ttl"><span class="num">/03</span><h4>Multi-database explícito</h4></div>
+          <p>Sin routers automáticos: cada query usa <span class="mono">.using('acosales')</span> o la DB que corresponda. Módulos enteros (stats, GPS, RTDC) escriben a bases dedicadas. Aislamiento real por empresa del grupo.</p>
+          <div class="code">
+Model.objects.<span class="k">using</span>(<span class="s">'acosales'</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;.filter(anulado_040=<span class="k">False</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;.select_related(<span class="s">'cliente'</span>)
+          </div>
+        </div>
+
+        <div class="pat">
+          <div class="ttl"><span class="num">/04</span><h4>Sin try/except defensivo</h4></div>
+          <p>Los métodos invocados vía <span class="mono">em</span> están envueltos por <span class="mono">@track_error</span>. Las excepciones llegan a Sentry y se traducen al frontend automáticamente — el código de negocio se queda limpio.</p>
+          <div class="code">
+<span class="k">@track_error</span><br/>
+<span class="k">def</span> export_rutero_input(<span class="k">self</span>, query_dict):<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># lógica de dominio, sin guardas</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return</span> {<span class="s">'ok'</span>: <span class="k">True</span>, ...}
+          </div>
+        </div>
+      </div>
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>04 / 09</div></div>
+    </div>
+  </section>
+
+  <!-- 05 CAPACIDADES -->
+  <section data-label="05 Capacidades">
+    <div class="s soft">
+      <div class="eyebrow"><span class="bar"></span>Tiempo real, async y cumplimiento</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">Tres capacidades transversales que el sistema resuelve nativamente.</h2>
+
+      <div class="cap-grid">
+        <div class="cap">
+          <div class="num">/01 · REAL-TIME</div>
+          <h4>Channels sobre Daphne</h4>
+          <p>Tracking GPS de choferes, notificaciones a backoffice, estado de bloques de carga en bodega. Layer Redis con soporte multi-instancia.</p>
+          <div class="stack">
+            <span class="chip">channels 4.x</span>
+            <span class="chip">channels_redis</span>
+            <span class="chip">daphne</span>
+          </div>
+        </div>
+
+        <div class="cap">
+          <div class="num">/02 · ASYNC</div>
+          <h4>Celery + beat + cron</h4>
+          <p>Cubos pre-generados nocturnos, fillrate de 5 años, SIFEN asíncrono, push notifications. Throttle de paralelismo con bash <span class="mono">wait -n</span>.</p>
+          <div class="stack">
+            <span class="chip">celery 5.5</span>
+            <span class="chip">RabbitMQ</span>
+            <span class="chip">django-celery-results</span>
+          </div>
+        </div>
+
+        <div class="cap">
+          <div class="num">/03 · COMPLIANCE</div>
+          <h4>SIFEN nativo (etrans)</h4>
+          <p>Generación de XML, cálculo de CDC, firma con certificado digital, envío SOAP a la SET, KUDE para el cliente final y cola de reintentos.</p>
+          <div class="stack">
+            <span class="chip">XML schema</span>
+            <span class="chip">cert. digital</span>
+            <span class="chip">SOAP</span>
+            <span class="chip">KUDE PDF</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>05 / 09</div></div>
+    </div>
+  </section>
+
+  <!-- 06 MDM -->
+  <section data-label="06 MDM">
+    <div class="s">
+      <div class="eyebrow"><span class="bar"></span>Gestión de dispositivos móviles · MDM</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">Control centralizado de los dispositivos del equipo comercial.</h2>
+
+      <div class="mdm-wrap">
+        <div class="mdm-diagram">
+          <div class="dttl">Topología</div>
+          <div class="mdm-server">
+            <div class="ic">MDM</div>
+            <div>
+              <div class="lab">Servidor central</div>
+              <div class="nm">Plataforma MDM</div>
+            </div>
+          </div>
+          <div class="mdm-fanout">
+            <div class="mdm-device">
+              <div class="glyph"></div>
+              <div class="lab">Dispositivo</div>
+              <div class="nm">Celular 1</div>
+            </div>
+            <div class="mdm-device tablet">
+              <div class="glyph"></div>
+              <div class="lab">Dispositivo</div>
+              <div class="nm">Tablet</div>
+            </div>
+            <div class="mdm-device">
+              <div class="glyph"></div>
+              <div class="lab">Dispositivo</div>
+              <div class="nm">Celular 2</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdm-features">
+          <div class="fttl">Funciones de seguridad</div>
+          <h3>Protección, control y operación uniforme en cada dispositivo.</h3>
+          <p class="lead-sm">Toda la flota del equipo de ventas gestionada desde un solo punto, con políticas aplicadas de forma remota.</p>
+          <div class="mdm-feat-grid">
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>Bloqueo remoto</div>
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>Borrado remoto</div>
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>Políticas de contraseña</div>
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>Control de aplicaciones</div>
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>Cifrado obligatorio</div>
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>Geolocalización</div>
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>Modo kiosco</div>
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>VPN forzado</div>
+            <div class="mdm-feat"><span class="check"><svg viewBox="0 0 12 12"><path d="M2 6 L5 9 L10 3"/></svg></span>Actualizaciones remotas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>06 / 09</div></div>
+    </div>
+  </section>
+
+  <!-- 07 CI / CD -->
+  <section data-label="07 CI CD">
+    <div class="s soft">
+      <div class="eyebrow"><span class="bar"></span>Pipeline de integración y despliegue</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">Cada commit pasa por el mismo proceso antes de llegar a producción.</h2>
+
+      <div class="ci-wrap">
+        <div class="ci-pipeline">
+          <div class="ci-step">
+            <div class="num">01</div>
+            <div class="nm">Commit &amp; Push</div>
+            <div class="meta">Branch develop / feature</div>
+            <span class="chip">git push</span>
+          </div>
+          <div class="ci-arrow"><svg viewBox="0 0 36 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8 H30 M26 4 L30 8 L26 12"/></svg></div>
+
+          <div class="ci-step">
+            <div class="num">02</div>
+            <div class="nm">Build</div>
+            <div class="meta">Imagen Docker, dependencias, assets</div>
+            <span class="chip">docker build</span>
+          </div>
+          <div class="ci-arrow"><svg viewBox="0 0 36 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8 H30 M26 4 L30 8 L26 12"/></svg></div>
+
+          <div class="ci-step">
+            <div class="num">03</div>
+            <div class="nm">Tests &amp; lint</div>
+            <div class="meta">Suite automatizada y validaciones de estilo</div>
+            <span class="chip">pytest · ruff</span>
+          </div>
+          <div class="ci-arrow"><svg viewBox="0 0 36 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8 H30 M26 4 L30 8 L26 12"/></svg></div>
+
+          <div class="ci-step">
+            <div class="num">04</div>
+            <div class="nm">Migraciones</div>
+            <div class="meta">Aplicación controlada de cambios de DB</div>
+            <span class="chip">manage.py migrate</span>
+          </div>
+          <div class="ci-arrow"><svg viewBox="0 0 36 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8 H30 M26 4 L30 8 L26 12"/></svg></div>
+
+          <div class="ci-step last">
+            <div class="num">05</div>
+            <div class="nm">Deploy</div>
+            <div class="meta">Producción · sin downtime</div>
+            <span class="chip">release :: prod</span>
+          </div>
+        </div>
+
+        <div class="ci-bottom">
+          <div class="ci-tile">
+            <div class="lab">Trazabilidad</div>
+            <div class="ttl">Cada release queda registrada</div>
+            <p class="desc">Commit, autor, fecha y cambios disponibles para auditoría.</p>
+          </div>
+          <div class="ci-tile">
+            <div class="lab">Rollback</div>
+            <div class="ttl">Vuelta atrás controlada</div>
+            <p class="desc">Si algo falla en producción, se vuelve a la versión estable anterior.</p>
+          </div>
+          <div class="ci-tile">
+            <div class="lab">Ambientes</div>
+            <div class="ttl">Develop · Staging · Producción</div>
+            <p class="desc">Mismo pipeline aplicado en cada entorno, con datos aislados.</p>
+          </div>
+          <div class="ci-tile">
+            <div class="lab">Frecuencia</div>
+            <div class="ttl">Despliegue continuo</div>
+            <p class="desc">Releases pequeñas y frecuentes en lugar de grandes lotes riesgosos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>07 / 09</div></div>
+    </div>
+  </section>
+
+  <!-- 08 NÚMEROS -->
+  <section data-label="08 Numeros">
+    <div class="s">
+      <div class="eyebrow"><span class="bar"></span>Números del proyecto</div>
+      <h2 class="title" style="margin-top:24px; max-width:1500px;">Escala real — no benchmarks de laboratorio.</h2>
+
+      <div class="nums">
+        <div class="num-card large brand">
+          <div>
+            <div class="v">10<span class="u">+</span></div>
+            <h5 style="margin-top:18px;">Años en producción continua</h5>
+          </div>
+          <p>Una década de iteración sobre operaciones reales de cinco empresas, con desarrollo activo en branch develop.</p>
+        </div>
+
+        <div class="num-card">
+          <div class="v">60K<span class="u">+</span></div>
+          <div><h5>Líneas de Python</h5><p>Monolito modular con apps por dominio.</p></div>
+        </div>
+
+        <div class="num-card alt">
+          <div class="v">16</div>
+          <div><h5>Apps Django de negocio</h5><p>Una por área funcional + utilitarios.</p></div>
+        </div>
+
+        <div class="num-card alt">
+          <div class="v">372</div>
+          <div><h5>Paquetes Python</h5><p>Stack maduro y curado en requirements.</p></div>
+        </div>
+
+        <div class="num-card">
+          <div class="v">9</div>
+          <div><h5>Bases PostgreSQL</h5><p>Operacional, BI, multi-empresa y legacy.</p></div>
+        </div>
+
+        <div class="num-card alt">
+          <div class="v">5</div>
+          <div><h5>Empresas operadas</h5><p>Aconcagua, DyT, MyS, IBO, CIES.</p></div>
+        </div>
+      </div>
+      <div class="footer"><div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt=""/></div>Aconcagua</div><div>08 / 09</div></div>
+    </div>
+  </section>
+
+  <!-- 09 CIERRE -->
+  <section data-label="09 Cierre">
+    <div class="s dark">
+      <div class="logo-lockup"><div class="logo-mark"><img src="assets/aco-logo.png" alt="Aconcagua"/></div><span>Aconcagua</span></div>
+      <div class="close" style="margin-top:60px;">
+        <div class="close-block">
+          <div class="accent-line"></div>
+          <h2>Hablemos<br/>de cómo<br/>se integra.</h2>
+          <p class="sub">APIs, WebSockets, multi-DB, jobs async y cumplimiento tributario — disponibles para evaluación técnica detallada.</p>
+        </div>
+        <div class="contact">
+          <div><div class="label">Tech contact</div><div class="val">tech@aconcagua.com.py</div></div>
+          <div><div class="label">Repo</div><div class="val">git · branch develop</div></div>
+          <div><div class="label">Stack</div><div class="val">Django 5.2 · Python 3.13 · PG</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>
